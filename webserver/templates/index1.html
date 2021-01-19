@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>NSM System Controller</title>
+    <link href="/static/bootstrap.css" rel="stylesheet">
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.js"></script>
+
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container col-lg-8">
+    <div style="padding-bottom: 0.5cm; padding-top: 0.2cm">
+        <div class="card">
+            {% include 'base/navbar.html' %}
+            <div class="settings-page">
+                <div class="container page">
+                    <div style="margin: 10px; text-align:right">
+                        <button type="submit" class="btn btn-primary btn-sm " id="saveAllButton"
+                                style="max-width: 120px;min-width: 80px; background-color: #6c757d">Save All
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm " id="exportButton"
+                                style="max-width: 120px;min-width: 80px;background-color: #6c757d">Export
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm " id="importButton"
+                                style="max-width: 120px;min-width: 80px; background-color: #6c757d">Import
+                        </button>
+                    </div>
+                    <table class="table table-bordered" aria-hidden="false">
+                        <tbody>
+                        {%for config in ui_config %}
+                        <tr>
+                            <td style="text-align: center">{{ config.label }}</td>
+                            <td>
+                                {% for item in config.list %}
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-4 text-right">
+                                        <label for={{item.id}}>{{item.label}}:</label>
+                                    </div>
+
+                                    <div class="left col-sm-6">
+                                        {% if item.type == "input" %}
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label={{item.label}}
+                                                   id={{item.id}}
+                                                   aria-describedby={{item.id}}
+                                                   placeholder={{item.placeholder}}>
+                                        </div>
+                                        {% elif item.type == "dropdown"%}
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                    style="max-width: 120px;min-width: 80px" id={{item.label}}
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                High
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                {% for pullitem in item.list %}
+                                                <a class="dropdown-item" href="#">{{pullitem}}</a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        {% elif item.type == "checkbox" %}
+                                        <div class="custom-checkbox">
+                                            <input type="checkbox" value="" id={{ item.id
+                                                   }}>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {% endfor%}
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="right col-sm-10" style="text-align:center">
+                                        <button type="submit" class="btn btn-primary btn-sm" id={{config.id}}
+                                                style="max-width: 120px; min-width: 80px">Set
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr/>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-bottom: 20px;text-align:right">
+                        <button type="submit" class="btn btn-primary btn-sm  pull-right" id="saveAllButton1"
+                                style="max-width: 120px;min-width: 80px; background-color: #6c757d;">Save All
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="exportButton1"
+                                style="max-width: 120px;min-width: 80px;background-color: #6c757d;">Export
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="importButton1"
+                                style="max-width: 120px;min-width: 80px; background-color: #6c757d; ">Import
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script>
+    $('#mytab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>
+
+</html>

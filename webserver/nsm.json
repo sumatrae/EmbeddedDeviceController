@@ -1,0 +1,69 @@
+{
+  "network": {
+    "ip": "192.168.10.1",
+    "netmask": "255.255.255.0",
+    "gateway": "192.168.10.1",
+    "dns": "144.144.144.144"
+  },
+  "dataport": {
+    "db37beamsteer": {
+      "address": "",
+      "enable": "false",
+      "output": "",
+      "trigger_edge": "",
+      "trigger_enable": "false",
+      "msb_level": "",
+      "data_level": ""
+    },
+    "db25_1": {
+      "address": "",
+      "enable": "false",
+      "output": "",
+      "msb_level": "",
+      "data_level": ""
+    },
+    "db25_2": {
+      "address": "",
+      "enable": "false",
+      "output": "",
+      "msb_level": "",
+      "data_level": ""
+    },
+    "db25_3": {
+      "address": "",
+      "enable": "false",
+      "output": "",
+      "msb_level": "",
+      "data_level": ""
+    }
+  },
+  "trig_r":
+  {
+    "recr": {
+      "trigger_enable": "false",
+      "trigger_level": "",
+      "pluse_width": "",
+      "r_enable": "",
+      "r_trig_edge": ""
+    },
+    "lo": {
+      "trigger_enable": "false",
+      "trigger_level": "",
+      "pluse_width": "",
+      "r_enable": "",
+      "r_trig_edge": ""
+    },
+    "src": {
+      "trigger_enable": "false",
+      "trigger_level": "",
+      "pluse_width": "",
+      "r_enable": "",
+      "r_trig_edge": ""
+    }
+  },
+  "pos_trig_in": {
+      "r_enable": "",
+      "r_trig_edge": ""
+    }
+
+}

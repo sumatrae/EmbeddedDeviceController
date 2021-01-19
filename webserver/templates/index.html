@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>NSM System Controller</title>
+    <link href="/static/bootstrap.css" rel="stylesheet">
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.js"></script>
+
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container col-lg-8">
+    <div style="padding-bottom: 0.5cm; padding-top: 0.2cm">
+        <div class="card text-left bg-light">
+            {% include 'base/navbar.html' %}
+            <tr class="settings-page">
+                <div class="container page">
+                    <div style="margin: 10px; alignment: right ">
+                        <button type="submit" class="btn btn-primary btn-sm "
+                                style="max-width: 120px;min-width: 80px; background-color: #6c757d">Save All
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm "
+                                style="max-width: 120px;min-width: 80px;background-color: #6c757d">Export
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm "
+                                style="max-width: 120px;min-width: 80px; background-color: #6c757d">Import
+                        </button>
+                    </div>
+                    <table class="table" aria-hidden="true">
+                        <tbody>
+                        <tr>
+                            <td width="20%">Network Setting</td>
+                            <td width="80%">
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">IP:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="IP"
+                                                   aria-describedby="inputGroup-sizing-default"
+                                                   placeholder="192.168.10.1">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">Netmask:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="Netmask"
+                                                   aria-describedby="inputGroup-sizing-default"
+                                                   placeholder="255.255.255.0">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">Gateway:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="Gateway"
+                                                   aria-describedby="inputGroup-sizing-default"
+                                                   placeholder="192.168.10.1">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">DNS:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="DNS"
+                                                   aria-describedby="inputGroup-sizing-default"
+                                                   placeholder="144.144.144.144">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                                style="max-width: 120px;min-width: 80px">Set
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td width="20%">DB37 BeamSteer</td>
+                            <td width="80%">
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">设备访问端口地址:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="port"
+                                                   aria-describedby="inputGroup-sizing-default" placeholder="0xAA">
+                                        </div>
+
+                                    </div>
+                                    <div class="right col-sm-3">
+                                        <input class="form-check-input" type="checkbox" value="" id="enableCheck">
+                                        <label class="form-check-label" for="enableCheck">
+                                            使能端口
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="outputvalue">端口输出值:</label>
+                                    </div>
+                                    <div class="right col-sm-6">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="outputvalue"
+                                                   aria-describedby="inputGroup-sizing-default" placeholder="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">设置IPUT触发沿:</label>
+                                    </div>
+                                    <div class="dropdown right col-sm-3">
+
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="iputdownMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="iputdownMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                            <a class="dropdown-item" href="#">Rising Edge</a>
+                                            <a class="dropdown-item" href="#">Falling Edge</a>
+                                        </div>
+                                    </div>
+                                    <div class="right col-sm-3" style="vertical-align:center;">
+                                        <input class="form-check-input" type="checkbox" value="" id="iputEnable">
+                                        <label class="form-check-label" for="iputEnable">
+                                            使能IPUT触发
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">MSB有效电平: </label>
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="msbMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="msbMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">数据有效电平:</label>
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="dataMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dataMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                                style="max-width: 120px;min-width: 80px">Set
+                                        </button>
+                                    </div>
+
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td width="20%">DB25 1</td>
+                            <td width="80%">
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">设备访问端口地址:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="port"
+                                                   aria-describedby="inputGroup-sizing-default" placeholder="0xAA">
+                                        </div>
+
+                                    </div>
+                                    <div class="right col-sm-3">
+                                        <input class="form-check-input" type="checkbox" value="" id="enableCheck">
+                                        <label class="form-check-label" for="enableCheck">
+                                            使能端口
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="outputvalue">端口输出值:</label>
+                                    </div>
+                                    <div class="right col-sm-6">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="outputvalue"
+                                                   aria-describedby="inputGroup-sizing-default" placeholder="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">MSB有效电平: </label>
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="msbMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="msbMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">数据有效电平:</label>
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="dataMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dataMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                                style="max-width: 120px;min-width: 80px">Set
+                                        </button>
+                                    </div>
+
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td width="20%">DB25 1</td>
+                            <td width="80%">
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="port">设备访问端口地址:</label>
+                                    </div>
+
+                                    <div class="right col-sm-3">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="port"
+                                                   aria-describedby="inputGroup-sizing-default" placeholder="0xAA">
+                                        </div>
+
+                                    </div>
+                                    <div class="right col-sm-3">
+                                        <input class="form-check-input" type="checkbox" value="" id="enableCheck">
+                                        <label class="form-check-label" for="enableCheck">
+                                            使能端口
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="outputvalue">端口输出值:</label>
+                                    </div>
+                                    <div class="right col-sm-6">
+                                        <div class="input-group input-group-sm"
+                                             style="max-width: 120px;min-width: 80px">
+                                            <input type="text" class="form-control" aria-label="outputvalue"
+                                                   aria-describedby="inputGroup-sizing-default" placeholder="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">MSB有效电平: </label>
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="msbMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="msbMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                        <label for="iputdownMenuButton">数据有效电平:</label>
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="dataMenuButton" style="max-width: 120px;min-width: 80px"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            High
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dataMenuButton">
+                                            <a class="dropdown-item" href="#">High</a>
+                                            <a class="dropdown-item" href="#">Low</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
+                                    <div class="left col-sm-3 text-right">
+                                    </div>
+                                    <div class="dropdown right col-sm-6">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                                style="max-width: 120px;min-width: 80px">Set
+                                        </button>
+                                    </div>
+
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                    <!--                    <div class="row">-->
+
+
+                    <!--                        <div class="col-md-4">-->
+                    <!--                            <label>DB37 BeamSteer</label>-->
+                    <!--                        </div>-->
+
+                    <!--                        <div class="dropdown col-md-4">-->
+                    <!--                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"-->
+                    <!--                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                    <!--                                Dropdown button-->
+                    <!--                            </button>-->
+                    <!--                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+                    <!--                                <a class="dropdown-item" href="#">Action</a>-->
+                    <!--                                <a class="dropdown-item" href="#">Another action</a>-->
+                    <!--                                <a class="dropdown-item" href="#">Something else here</a>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-md-4">-->
+                    <!--                            <label>DB37 BeamSteer</label>-->
+                    <!--                        </div>-->
+
+
+                    <!--                        <div class="col-md-12 col-md-offset-12 col-xs-12">-->
+                    <!--                            &lt;!&ndash;                            <h3 class="text-xs-center">xxx配置管理系统</h3>&ndash;&gt;-->
+
+                    <!--                            <div class="dropdown">-->
+                    <!--                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"-->
+                    <!--                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                    <!--                                    Dropdown button-->
+                    <!--                                </button>-->
+                    <!--                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+                    <!--                                    <a class="dropdown-item" href="#">Action</a>-->
+                    <!--                                    <a class="dropdown-item" href="#">Another action</a>-->
+                    <!--                                    <a class="dropdown-item" href="#">Something else here</a>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="input-group">-->
+                    <!--                                <div class="input-group-prepend">-->
+                    <!--                                    <span class="input-group-text">With textarea</span>-->
+                    <!--                                </div>-->
+                    <!--                                <textarea class="form-control" aria-label="With textarea"></textarea>-->
+                    <!--                            </div>-->
+
+                    <!--                            <div>-->
+                    <!--                                <div class="dropdown-menu">-->
+                    <!--                                    <a class="dropdown-item" href="#">Action</a>-->
+
+
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="dropdown">-->
+                    <!--                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"-->
+                    <!--                                   id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"-->
+                    <!--                                   aria-expanded="false">-->
+                    <!--                                    Dropdown link-->
+                    <!--                                </a>-->
+
+                    <!--                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
+                    <!--                                    <a class="dropdown-item" href="#">Action</a>-->
+                    <!--                                    <a class="dropdown-item" href="#">Another action</a>-->
+                    <!--                                    <a class="dropdown-item" href="#">Something else here</a>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+
+                    <!--                            <div class="btn-group">-->
+                    <!--                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"-->
+                    <!--                                        aria-haspopup="true" aria-expanded="false">-->
+                    <!--                                    Action-->
+                    <!--                                </button>-->
+                    <!--                                <div class="dropdown-menu">-->
+                    <!--                                    <a class="dropdown-item" href="#">Action</a>-->
+                    <!--                                    <a class="dropdown-item" href="#">Another action</a>-->
+                    <!--                                    <a class="dropdown-item" href="#">Something else here</a>-->
+                    <!--                                    <div class="dropdown-divider"></div>-->
+                    <!--                                    <a class="dropdown-item" href="#">Separated link</a>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+
+                    <!--                            <form>-->
+                    <!--                                <fieldset class="form-group">-->
+                    <!--                                    <input class="form-control" type="text" placeholder="URL of profile picture">-->
+                    <!--                                    &lt;!&ndash;             <input type="file" id="file"> &ndash;&gt;-->
+                    <!--                                </fieldset>-->
+                    <!--                                <fieldset class="form-group">-->
+                    <!--                                    <input class="form-control form-control-lg" type="text" placeholder="Your Name">-->
+                    <!--                                </fieldset>-->
+                    <!--                                <fieldset class="form-group">-->
+                    <!--                                    <textarea class="form-control form-control-lg" rows="8"-->
+                    <!--                                              placeholder="Short bio about you"></textarea>-->
+                    <!--                                </fieldset>-->
+                    <!--                                <fieldset class="form-group">-->
+                    <!--                                    <input class="form-control form-control-lg" type="text" placeholder="Email">-->
+                    <!--                                </fieldset>-->
+                    <!--                                <fieldset class="form-group">-->
+                    <!--                                    <input class="form-control form-control-lg" type="password"-->
+                    <!--                                           placeholder="Password">-->
+                    <!--                                    <div class="btn-group" data-toggle="buttons">-->
+                    <!--                                        <label class="btn btn-primary active">-->
+                    <!--                                            <input type="checkbox" checked> Checkbox 1 (pre-checked)-->
+                    <!--                                        </label>-->
+                    <!--                                        <label class="btn btn-primary">-->
+                    <!--                                            <input type="checkbox"> Checkbox 2-->
+                    <!--                                        </label>-->
+                    <!--                                        <label class="btn btn-primary">-->
+                    <!--                                            <input type="checkbox"> Checkbox 3-->
+                    <!--                                        </label>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="btn-group" data-toggle="buttons">-->
+                    <!--                                        <label class="btn btn-primary active">-->
+                    <!--                                            <input type="radio" name="options" id="option1" checked> Radio 1-->
+                    <!--                                            (preselected)-->
+                    <!--                                        </label>-->
+                    <!--                                        <label class="btn btn-primary">-->
+                    <!--                                            <input type="radio" name="options" id="option2"> Radio 2-->
+                    <!--                                        </label>-->
+                    <!--                                        <label class="btn btn-primary">-->
+                    <!--                                            <input type="radio" name="options" id="option3"> Radio 3-->
+                    <!--                                        </label>-->
+                    <!--                                    </div>-->
+
+
+                    <!--                                </fieldset>-->
+                    <!--                                <button class="btn btn-lg btn-primary pull-xs-right">-->
+                    <!--                                    Update Settings-->
+                    <!--                                </button>-->
+                    <!--                            </form>-->
+                    <!--                            <form>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <label for="exampleInputEmail1">Email address</label>-->
+                    <!--                                    <input type="email" class="form-control" id="exampleInputEmail1"-->
+                    <!--                                           aria-describedby="emailHelp" placeholder="Enter email">-->
+                    <!--                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email-->
+                    <!--                                        with-->
+                    <!--                                        anyone else.</small>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <label for="exampleInputPassword1">Password</label>-->
+                    <!--                                    <input type="password" class="form-control" id="exampleInputPassword1"-->
+                    <!--                                           placeholder="Password">-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group form-check">-->
+                    <!--                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+                    <!--                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+                    <!--                                </div>-->
+                    <!--                                <button type="submit" class="btn btn-primary">Submit</button>-->
+                    <!--                            </form>-->
+                    <!--                            <div class="form-check">-->
+                    <!--                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">-->
+                    <!--                                <label class="form-check-label" for="defaultCheck1">-->
+                    <!--                                    Default checkbox-->
+                    <!--                                </label>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="form-check">-->
+                    <!--                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2"-->
+                    <!--                                       disabled>-->
+                    <!--                                <label class="form-check-label" for="defaultCheck2">-->
+                    <!--                                    Disabled checkbox-->
+                    <!--                                </label>-->
+                    <!--                            </div>-->
+                    <!--                            <form>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <label for="exampleFormControlFile1">Example file input</label>-->
+                    <!--                                    <input type="file" class="form-control-file" id="exampleFormControlFile1">-->
+                    <!--                                </div>-->
+                    <!--                            </form>-->
+                    <!--                        </div>-->
+
+
+                </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+</body>
+<script>
+    $('#mytab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>
+
+</html>
