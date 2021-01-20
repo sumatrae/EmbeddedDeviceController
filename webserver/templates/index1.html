@@ -23,36 +23,40 @@
             <div class="settings-page">
                 <div class="container page">
                     <div style="margin: 10px; text-align:right">
-                        <button type="submit" class="btn btn-primary btn-sm " id="saveAllButton"
-                                style="max-width: 120px;min-width: 80px; background-color: #6c757d">Save All
+                        <button type="submit" class="btn btn-primary btn-sm " id="save_all_top"
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save All
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm " id="exportButton"
-                                style="max-width: 120px;min-width: 80px;background-color: #6c757d">Export
+                        <button type="submit" class="btn btn-primary btn-sm " id="export_top"
+                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">Export
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm " id="importButton"
-                                style="max-width: 120px;min-width: 80px; background-color: #6c757d">Import
+                        <button type="submit" class="btn btn-primary btn-sm " id="import_top"
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff ; color: #005cbf">Import
                         </button>
                     </div>
-                    <table class="table table-bordered" aria-hidden="false">
+                    <table class="table table-bordered">
                         <tbody>
                         {%for config in ui_config %}
                         <tr>
-                            <td style="text-align: center">{{ config.label }}</td>
-                            <td>
-                                {% for item in config.list %}
-                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
-                                    <div class="left col-sm-4 text-right">
+                            <td style="text-align: center;width: 20%; "><strong>{{ config.label }}</strong></td>
+                            <td style="text-align: left;width: 80%">
+                                {% set group_config = nsm_config[config.id]%}
+
+                                <div class="row" style="vertical-align:center;">
+                                    {% for item in config.list %}
+                                    <div class="col-sm-4 text-right"
+                                         style="margin-top: 5px;vertical-align: center ">
                                         <label for={{item.id}}>{{item.label}}:</label>
                                     </div>
 
-                                    <div class="left col-sm-6">
+                                    <div class="col-sm-8" style="margin-top: 5px">
+
                                         {% if item.type == "input" %}
                                         <div class="input-group input-group-sm"
-                                             style="max-width: 120px;min-width: 80px">
+                                             style="max-width: 50%;min-width: 25%">
                                             <input type="text" class="form-control" aria-label={{item.label}}
-                                                   id={{item.id}}
-                                                   aria-describedby={{item.id}}
-                                                   placeholder={{item.placeholder}}>
+                                                   id={{ config.id ~ '_' ~ item.id }}
+                                            aria-describedby={{item.id}}
+                                            placeholder={{item.placeholder}} value = {{ group_config[item.id] }}>
                                         </div>
                                         {% elif item.type == "dropdown"%}
                                         <div class="dropdown">
@@ -70,37 +74,36 @@
 
                                         {% elif item.type == "checkbox" %}
                                         <div class="custom-checkbox">
-                                            <input type="checkbox" value="" id={{ item.id
-                                                   }}>
+                                            <input type="checkbox" value={{ group_config[item.id] }}
+                                                   id={{ config.id ~ '_' ~ item.id }}>
                                         </div>
                                         {% endif %}
                                     </div>
-                                </div>
+                                    {% endfor%}
+                                    <div class="left col-sm-4 text-right" style="margin-top: 5px">
+                                    </div>
 
-                                {% endfor%}
-                                <div class="form-group row" style="max-width: 80%;vertical-align:center">
-                                    <div class="right col-sm-10" style="text-align:center">
+                                    <div class="left col-sm-8" style="margin-top: 5px">
                                         <button type="submit" class="btn btn-primary btn-sm" id={{config.id}}
-                                                style="max-width: 120px; min-width: 80px">Set
+                                                style="max-width: 120px; min-width: 80px; ">Set
                                         </button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         {% endfor %}
-                        <tr/>
                         </tbody>
                     </table>
 
                     <div style="margin-bottom: 20px;text-align:right">
-                        <button type="submit" class="btn btn-primary btn-sm  pull-right" id="saveAllButton1"
-                                style="max-width: 120px;min-width: 80px; background-color: #6c757d;">Save All
+                        <button type="submit" class="btn btn-primary btn-sm  pull-right" id="save_all_bottom"
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save All
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="exportButton1"
-                                style="max-width: 120px;min-width: 80px;background-color: #6c757d;">Export
+                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="export_bottom"
+                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">Export
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="importButton1"
-                                style="max-width: 120px;min-width: 80px; background-color: #6c757d; ">Import
+                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="import_bottom"
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf ">Import
                         </button>
                     </div>
 
@@ -110,15 +113,61 @@
         </div>
     </div>
 
+    <div class="card-footer" style="padding: 0.5cm">
+        <div class="item" id="api_output" style="margin: auto; color: rgb(82, 187, 33)"></div>
+    </div>
 </div>
 
 
 </body>
-<script>
-    $('#mytab a').click(function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
+
+<script type="text/javascript">
+    function getConfig() {
+        var api_output = $('#api_output');
+        $.ajax({
+            url: '/nsm',
+            type: "GET",
+            dataType: "json",
+            processData: false,
+            contentType: false
+        }).done(function (data) {
+            if (data) {
+                console.log(data)
+                api_output.html(data);
+            }
+        }).fail(function () {
+            api_output.html('Failed to upload file!');
+        });
+    }
+
+    function submitModuleConfig() {
+        var api_output = $('#api_output');
+        $.ajax({
+            url: '/nsm',
+            type: "POST",
+            dataType: "json",
+            processData: false,
+            contentType: false
+        }).done(function (data) {
+            if (data) {
+                console.log(data)
+                api_output.html(data);
+            }
+        }).fail(function () {
+            api_output.html('Failed to upload file!');
+        });
+
+    }
+
+
+    function isJSON(name) {
+        return name.match(/json$/i)
+    }
+
+
+    $(document).ready(function () {
+        getConfig()
+    });
 </script>
 
 </html>

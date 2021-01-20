@@ -1,6 +1,6 @@
 [
   {
-    "id": "network_setting",
+    "id": "network",
     "label": "Network setting",
     "type": "header",
     "list": [
@@ -31,36 +31,36 @@
     ]
   },
   {
-    "id": "db37_setting",
+    "id": "db37beamsteer",
     "label": "DB37 BeamSteer",
     "type": "header",
     "list": [
       {
-        "id": "db37_port_enable_checkbox",
+        "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "db37_port",
+        "id": "address",
         "label": "设备访问端口地址(32bit)",
         "type": "input",
         "placeholder": "0xAAAA"
       },
       {
-        "id": "db37_output_value",
+        "id": "output",
         "label": "端口输出值",
         "type": "input",
         "placeholder": "0.01"
       },
       {
-        "id": "db37_iput_enable_checkbox",
+        "id": "trigger_enable",
         "label": "使能IPUT触发沿",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "db37_trigger_edge",
+        "id": "trigger_edge",
         "label": "设置IPUT触发沿",
         "type": "dropdown",
         "list": [
@@ -71,8 +71,17 @@
         ]
       },
       {
-        "id": "db37_msb_valid_level",
+        "id": "msb_level",
         "label": "MSB有效电平",
+        "type": "dropdown",
+        "list": [
+          "High",
+          "Low"
+        ]
+      },
+      {
+        "id": "data_level",
+        "label": "DATA有效电平",
         "type": "dropdown",
         "list": [
           "High",
@@ -82,30 +91,39 @@
     ]
   },
   {
-    "id": "db25_1_setting",
+    "id": "db25_1",
     "label": "DB25 1",
     "list": [
       {
-        "id": "db25_1_port_enable_checkbox",
+        "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "db25_1_port",
+        "id": "address",
         "label": "设备访问端口地址(16bit)",
         "type": "input",
         "placeholder": "0xAA"
       },
       {
-        "id": "db25_1_output_value",
+        "id": "output",
         "label": "端口输出值",
         "type": "input",
         "placeholder": "0.01"
       },
       {
-        "id": "db25_1_msb_valid_level",
+        "id": "msb_level",
         "label": "MSB有效电平",
+        "type": "dropdown",
+        "list": [
+          "High",
+          "Low"
+        ]
+      },
+      {
+        "id": "data_level",
+        "label": "DATA有效电平",
         "type": "dropdown",
         "list": [
           "High",
@@ -115,29 +133,38 @@
     ]
   },
   {
-    "id": "db25_2_setting",
+    "id": "db25_2",
     "label": "DB25 2",
     "list": [
       {
-        "id": "db25_2_port_enable_checkbox",
+        "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "db25_2_port",
+        "id": "address",
         "label": "设备访问端口地址(16bit)",
         "type": "input",
         "placeholder": "0xAA"
       },
       {
-        "id": "db25_2_output_value",
+        "id": "output",
         "label": "端口输出值",
         "type": "input",
         "placeholder": "0.01"
       },
       {
-        "id": "db25_2_msb_valid_level",
+        "id": "msb_level",
+        "label": "DATA有效电平",
+        "type": "dropdown",
+        "list": [
+          "High",
+          "Low"
+        ]
+      },
+      {
+        "id": "data_level",
         "label": "MSB有效电平",
         "type": "dropdown",
         "list": [
@@ -148,30 +175,39 @@
     ]
   },
   {
-    "id": "db25_3_setting",
+    "id": "db25_3",
     "label": "DB25 3",
     "list": [
       {
-        "id": "db25_3_port_enable_checkbox",
+        "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "db25_3_port",
+        "id": "address",
         "label": "设备访问端口地址(16bit)",
         "type": "input",
         "placeholder": "0xAA"
       },
       {
-        "id": "db25_3_output_value",
+        "id": "output",
         "label": "端口输出值",
         "type": "input",
         "placeholder": "0.01"
       },
       {
-        "id": "db25_3_msb_valid_level",
+        "id": "msb_level",
         "label": "MSB有效电平",
+        "type": "dropdown",
+        "list": [
+          "High",
+          "Low"
+        ]
+      },
+      {
+        "id": "data_level",
+        "label": "DATA有效电平",
         "type": "dropdown",
         "list": [
           "High",
@@ -181,18 +217,18 @@
     ]
   },
   {
-    "id": "recr_setting",
+    "id": "recr",
     "label": "Recr Trig & R",
     "type": "header",
     "list": [
       {
-        "id": "recr_trig_enable_checkbox",
+        "id": "trigger_enable",
         "label": "使能trig端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "recr_trig_edge",
+        "id": "trigger_level",
         "label": "trig有效电平",
         "type": "dropdown",
         "list": [
@@ -201,19 +237,19 @@
         ]
       },
       {
-        "id": "recr_trig_pluse_width",
+        "id": "pluse_width",
         "label": "trig脉冲宽度(1-1000us)",
         "type": "input",
         "placeholder": "1"
       },
       {
-        "id": "recr_r_enable_checkbox",
+        "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "recr_r_edge",
+        "id": "r_trig_edge",
         "label": "设置R触发沿",
         "type": "dropdown",
         "list": [
@@ -226,17 +262,17 @@
     ]
   },
   {
-    "id": "lo_setting",
+    "id": "lo",
     "label": "LO Trig & R",
     "list": [
       {
-        "id": "lo_trig_enable_checkbox",
+        "id": "trigger_enable",
         "label": "使能trig端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "lo_trig_edge",
+        "id": "trigger_level",
         "label": "trig有效电平",
         "type": "dropdown",
         "list": [
@@ -245,19 +281,19 @@
         ]
       },
       {
-        "id": "lo_trig_pluse_width",
+        "id": "pluse_width",
         "label": "trig脉冲宽度(1-1000us)",
         "type": "input",
         "placeholder": "1"
       },
       {
-        "id": "lo_r_enable_checkbox",
+        "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "lo_r_edge",
+        "id": "r_trig_edge",
         "label": "设置R触发沿",
         "type": "dropdown",
         "list": [
@@ -270,17 +306,17 @@
     ]
   },
   {
-    "id": "src_setting",
+    "id": "src",
     "label": "SRC Trig & R",
     "list": [
       {
-        "id": "src_trig_enable_checkbox",
+        "id": "trigger_enable",
         "label": "使能trig端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "src_trig_edge",
+        "id": "trigger_level",
         "label": "trig有效电平",
         "type": "dropdown",
         "list": [
@@ -289,19 +325,19 @@
         ]
       },
       {
-        "id": "src_trig_pluse_width",
+        "id": "pluse_width",
         "label": "trig脉冲宽度(1-1000us)",
         "type": "input",
         "placeholder": "1"
       },
       {
-        "id": "src_r_enable_checkbox",
+        "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "src_r_edge",
+        "id": "r_trig_edge",
         "label": "设置R触发沿",
         "type": "dropdown",
         "list": [
@@ -314,17 +350,17 @@
     ]
   },
   {
-    "id": "pos_trig_setting",
+    "id": "pos_trig_in",
     "label": "Pos Trig In",
     "list": [
       {
-        "id": "pos_trig_enable_checkbox",
+        "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
         "default": false
       },
       {
-        "id": "pos_trig_edge",
+        "id": "r_trig_edge",
         "label": "设置R触发沿",
         "type": "dropdown",
         "list": [

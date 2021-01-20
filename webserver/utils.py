@@ -44,3 +44,10 @@ def load_config(filename, ordered = False):
             from collections import OrderedDict
             config = json.load(fd, object_pairs_hook= OrderedDict)
     return config
+
+
+def save_config(filename, config):
+    with open(filename,"w+", encoding="utf-8") as fd:
+        config = json.dump(config, fd)
+
+    return config
