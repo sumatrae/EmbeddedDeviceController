@@ -18,92 +18,147 @@
 
 <div class="container col-lg-8">
     <div style="padding-bottom: 0.5cm; padding-top: 0.2cm">
-        <div class="card">
+        <div class="card" style="background-color: #fefefe">
             {% include 'base/navbar.html' %}
             <div class="settings-page">
                 <div class="container page">
                     <div style="margin: 10px; text-align:right">
                         <button type="submit" class="btn btn-primary btn-sm " id="save_all_top"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save All
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save
+                            All
                         </button>
                         <button type="submit" class="btn btn-primary btn-sm " id="export_top"
-                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">Export
+                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">
+                            Export
                         </button>
                         <button type="submit" class="btn btn-primary btn-sm " id="import_top"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff ; color: #005cbf">Import
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff ; color: #005cbf">
+                            Import
                         </button>
                     </div>
-                    <table class="table table-bordered">
+
+                    <table class="table table-bordered" style="background-color: #fff3f8 ">
+
                         <tbody>
+
                         {%for config in ui_config %}
                         <tr>
                             <td style="text-align: center;width: 20%; "><strong>{{ config.label }}</strong></td>
                             <td style="text-align: left;width: 80%">
                                 {% set group_config = nsm_config[config.id]%}
-
-                                <div class="row" style="vertical-align:center;">
-                                    {% for item in config.list %}
-                                    <div class="col-sm-4 text-right"
-                                         style="margin-top: 5px;vertical-align: center ">
-                                        <label for={{item.id}}>{{item.label}}:</label>
-                                    </div>
-
-                                    <div class="col-sm-8" style="margin-top: 5px">
-
-                                        {% if item.type == "input" %}
-                                        <div class="input-group input-group-sm"
-                                             style="max-width: 50%;min-width: 25%">
-                                            <input type="text" class="form-control" aria-label={{item.label}}
-                                                   id={{ config.id ~ '_' ~ item.id }}
-                                            aria-describedby={{item.id}}
-                                            placeholder={{item.placeholder}} value = {{ group_config[item.id] }}>
+                                <form id={{config.id}} action="/nsm/{{config.id}}"  enctype="multipart/form-data"
+                                      method="post">
+                                    <div class="row " style="vertical-align:center;">
+                                        {% for item in config.list %}
+                                        <div class="col-sm-4 text-right"
+                                             style="margin-top: 5px;vertical-align: center ">
+                                            <label for={{item.id}}>{{item.label}}:</label>
                                         </div>
-                                        {% elif item.type == "dropdown"%}
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
-                                                    style="max-width: 120px;min-width: 80px" id={{item.label}}
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                High
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                {% for pullitem in item.list %}
-                                                <a class="dropdown-item" href="#">{{pullitem}}</a>
-                                                {% endfor %}
+
+                                        <div class="col-sm-8" style="margin-top: 5px">
+
+                                            {% if item.type == "input" %}
+                                            <div class="input-group input-group-sm"
+                                                 style="max-width: 50%;min-width: 25%">
+                                                <input type="text" class="form-control" aria-label={{item.label}}
+                                                       name={{ config.id ~ '_' ~ item.id }}
+                                                id={{ config.id ~ '_' ~ item.id }}
+                                                aria-describedby={{item.id}}
+                                                placeholder={{item.placeholder}} value = {{ group_config[item.id]
+                                                }}>
                                             </div>
+
+                                            {% elif item.type == "dropdown"%}
+                                            <div>
+                                                <select name={{ config.id ~ '_' ~ item.id }} id={{ config.id ~ '_' ~
+                                                item.id }} >
+                                                {% for pullitem in item.list %}
+                                                {% if pullitem == group_config[item.id] %}
+                                                <option value={{pullitem}} selected>{{pullitem}}</option>
+                                                {% else %}
+                                                <option value={{pullitem}}>{{pullitem}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+
+
+                                                </select>
+                                            </div>
+                                            <!--                                            <div class="dropdown">-->
+                                            <!--                                                <button class="btn btn-secondary dropdown-toggle btn-sm"-->
+                                            <!--                                                        type="button"-->
+                                            <!--                                                        style="max-width: 160px;min-width: 120px; text-align: right;
+                                             border-color: #adb5bd ; background-color: #ffffff;color: #1b1e21" name={{ config.id ~ '_' ~ item.id }}
+                                                                                           id={{ config.id ~ '_' ~ item.id }}
+                                                                                            data-toggle="dropdown" aria-haspopup="true"-->
+                                            <!--                                                aria-expanded="false">-->
+                                            <!--                                                High-->
+                                            <!--                                                </button>-->
+                                            <!--                                                <div class="dropdown-menu">-->
+                                            <!--                                                    {% for pullitem in item.list %}-->
+                                            <!--                                                    <a class="dropdown-item"-->
+                                            <!--                                                       onclick="showdropdown($(this).text(), {{ config.id ~ '_' ~ item.id }})"-->
+                                            <!--                                                       >{{pullitem}}</a>-->
+                                            <!--                                                    {% endfor %}-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
+
+                                            {% elif item.type == "checkbox" %}
+
+                                            <div>
+                                                <select name={{ config.id ~ '_' ~ item.id }} id={{ config.id ~ '_' ~
+                                                item.id }} >
+                                                {% for pullitem in item.list %}
+                                                {% if pullitem == group_config[item.id] %}
+                                                <option value={{pullitem}} selected>{{pullitem}}</option>
+                                                {% else %}
+                                                <option value={{pullitem}}>{{pullitem}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                                </select>
+                                                <!--                                                {% if group_config[item.id] == "false" %}-->
+                                                <!--                                                <input type="checkbox" value="false"  checked name = {{ config.id ~ '_' ~ item.id }}-->
+                                                <!--                                                       id={{ config.id ~ '_' ~ item.id }} >-->
+                                                <!--                                                {% else %}-->
+                                                <!--                                                <input type="checkbox" value="true" name = {{ config.id ~ '_' ~ item.id }}-->
+                                                <!--                                                       id={{ config.id ~ '_' ~ item.id }} checked>-->
+
+                                                <!--                                                {% endif %}-->
+
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% endfor%}
+                                        <div class="left col-sm-4 text-right" style="margin-top: 5px">
                                         </div>
 
-                                        {% elif item.type == "checkbox" %}
-                                        <div class="custom-checkbox">
-                                            <input type="checkbox" value={{ group_config[item.id] }}
-                                                   id={{ config.id ~ '_' ~ item.id }}>
+                                        <div class="left col-sm-8" style="margin-top: 5px">
+                                            <button type="submit" class="btn btn-primary btn-sm"
+                                                    id={{config.id ~
+                                            "_" ~ "button"}}
+                                            style="max-width: 160px; min-width: 120px; ">Set
+                                            </button>
                                         </div>
-                                        {% endif %}
                                     </div>
-                                    {% endfor%}
-                                    <div class="left col-sm-4 text-right" style="margin-top: 5px">
-                                    </div>
-
-                                    <div class="left col-sm-8" style="margin-top: 5px">
-                                        <button type="submit" class="btn btn-primary btn-sm" id={{config.id}}
-                                                style="max-width: 120px; min-width: 80px; ">Set
-                                        </button>
-                                    </div>
-                                </div>
+                                </form>
                             </td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
 
+
                     <div style="margin-bottom: 20px;text-align:right">
                         <button type="submit" class="btn btn-primary btn-sm  pull-right" id="save_all_bottom"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save All
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save
+                            All
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="export_bottom"
-                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">Export
+                        <button type="button" class="btn btn-primary btn-sm pull-right" id="export_bottom"
+                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">
+                            Export
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm pull-right" id="import_bottom"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf ">Import
+                        <button type="button" class="btn btn-primary btn-sm pull-right" id="import_bottom"
+                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf ">
+                            Import
                         </button>
                     </div>
 
@@ -112,6 +167,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="card-footer" style="padding: 0.5cm">
         <div class="item" id="api_output" style="margin: auto; color: rgb(82, 187, 33)"></div>
@@ -125,9 +181,9 @@
     function getConfig() {
         var api_output = $('#api_output');
         $.ajax({
-            url: '/nsm',
+            url: '/getconfig',
             type: "GET",
-            dataType: "json",
+            dataType: "application/json",
             processData: false,
             contentType: false
         }).done(function (data) {
@@ -140,23 +196,9 @@
         });
     }
 
-    function submitModuleConfig() {
-        var api_output = $('#api_output');
-        $.ajax({
-            url: '/nsm',
-            type: "POST",
-            dataType: "json",
-            processData: false,
-            contentType: false
-        }).done(function (data) {
-            if (data) {
-                console.log(data)
-                api_output.html(data);
-            }
-        }).fail(function () {
-            api_output.html('Failed to upload file!');
-        });
+    function showdropdown(text, button_name) {
 
+        $(button_name).text(text)
     }
 
 

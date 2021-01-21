@@ -2,7 +2,7 @@ import os
 import flask
 from flask import Flask, session
 import config
-from utils import load_config
+from utils import load_config, save_config
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -41,7 +41,7 @@ def get_user_ip(request):
 def index():
     ip = get_user_ip(flask.request)
     session["ip"] = ip
-    tempfile = f"{ip}.txt"
+    tempfile = f"{ip}.json"
     if not os.path.exists(tempfile):
         import shutil
         shutil.copy("nsm.json", tempfile)
@@ -57,15 +57,49 @@ def index():
     flask.render_template('index1.html')
 
 
-@app.route("/ui", methods=["GET", ])
+@app.route("/getconfig", methods=["GET", ])
 def getuiconfig():
-    return flask.jsonify(ui_config)
+    ip = get_user_ip(flask.request)
+    session["ip"] = ip
+    tempfile = f"{ip}.json"
+    if not os.path.exists(tempfile):
+        import shutil
+        shutil.copy("nsm.json", tempfile)
 
+    nsm_config = load_config(tempfile)
 
-@app.route("/nsm", methods=["GET", "POST"])
-def getnsmconfig():
-    nsm_config = load_config("nsm.json")
     return flask.jsonify(nsm_config)
+
+
+@app.route("/nsm/<config_id>", methods=["GET", "POST"])
+def getnsmconfig(config_id):
+    if flask.request.method == "GET":
+        nsm_config = load_config("nsm.json")
+        return flask.jsonify(nsm_config)
+
+    elif flask.request.method == "POST":
+        ip = get_user_ip(flask.request)
+        nsm_config = load_config(f"{ip}.json")
+        print(config_id)
+        if config_id == "savaall":
+            print("savaall")
+            nsm_config = load_config(f"{ip}.json")
+            return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+
+        form = flask.request.form
+        if config_id in nsm_config.keys():
+            for key in nsm_config[config_id].keys():
+                value = form.get(f"{config_id}_{key}", '')
+                if value != '':
+                    nsm_config[config_id][key] = value
+
+            save_config("nsm.json", nsm_config)
+            save_config(f"{ip}.json", nsm_config)
+
+            return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+
+
+
 
 
 def set_network(config):

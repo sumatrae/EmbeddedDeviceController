@@ -7,57 +7,57 @@
   },
   "db37beamsteer": {
     "address": "0x01",
-    "enable": "false",
+    "enable": "Yes",
     "output": "1",
     "trigger_edge": "High",
-    "trigger_enable": "false",
+    "trigger_enable": "Yes",
     "msb_level": "High",
     "data_level": "High"
   },
   "db25_1": {
     "address": "0x01",
-    "enable": "false",
+    "enable": "No",
     "output": "1",
     "msb_level": "High",
     "data_level": "High"
   },
   "db25_2": {
     "address": "0x01",
-    "enable": "false",
+    "enable": "No",
     "output": "1",
     "msb_level": "High",
     "data_level": "High"
   },
   "db25_3": {
     "address": "0x01",
-    "enable": "false",
+    "enable": "No",
     "output": "1",
     "msb_level": "High",
     "data_level": "High"
   },
   "recr": {
-    "trigger_enable": "false",
+    "trigger_enable": "No",
     "trigger_level": "High",
     "pluse_width": "1",
-    "r_enable": "false",
+    "r_enable": "No",
     "r_trig_edge": "High"
   },
   "lo": {
-    "trigger_enable": "false",
+    "trigger_enable": "No",
     "trigger_level": "High",
     "pluse_width": "1",
-    "r_enable": "false",
+    "r_enable": "No",
     "r_trig_edge": "High"
   },
   "src": {
-    "trigger_enable": "false",
+    "trigger_enable": "No",
     "trigger_level": "High",
     "pluse_width": "1",
-    "r_enable": "false",
+    "r_enable": "No",
     "r_trig_edge": "High"
   },
   "pos_trig_in": {
-    "r_enable": "false",
+    "r_enable": "No",
     "r_trig_edge": "High"
   }
 }

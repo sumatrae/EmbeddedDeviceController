@@ -39,7 +39,11 @@
         "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
-        "default": false
+         "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "address",
@@ -57,7 +61,11 @@
         "id": "trigger_enable",
         "label": "使能IPUT触发沿",
         "type": "checkbox",
-        "default": false
+         "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "trigger_edge",
@@ -66,8 +74,8 @@
         "list": [
           "High",
           "Low",
-          "Rising Edge",
-          "Falling Edge"
+          "Rising-Edge",
+          "Falling-Edge"
         ]
       },
       {
@@ -98,7 +106,11 @@
         "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "address",
@@ -140,7 +152,11 @@
         "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "address",
@@ -182,7 +198,11 @@
         "id": "enable",
         "label": "使能端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "address",
@@ -225,7 +245,11 @@
         "id": "trigger_enable",
         "label": "使能trig端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "trigger_level",
@@ -246,7 +270,11 @@
         "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "r_trig_edge",
@@ -269,7 +297,11 @@
         "id": "trigger_enable",
         "label": "使能trig端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "trigger_level",
@@ -290,7 +322,11 @@
         "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "r_trig_edge",
@@ -299,8 +335,8 @@
         "list": [
           "High",
           "Low",
-          "Rising Edge",
-          "Falling Edge"
+          "Rising-Edge",
+          "Falling-Edge"
         ]
       }
     ]
@@ -313,7 +349,11 @@
         "id": "trigger_enable",
         "label": "使能trig端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "trigger_level",
@@ -334,7 +374,11 @@
         "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "r_trig_edge",
@@ -357,7 +401,11 @@
         "id": "r_enable",
         "label": "使能R端口",
         "type": "checkbox",
-        "default": false
+        "list": [
+          "Yes",
+          "No"
+        ],
+        "default": "No"
       },
       {
         "id": "r_trig_edge",
