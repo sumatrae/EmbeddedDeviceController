@@ -3,6 +3,8 @@ import flask
 from flask import Flask, session
 import config
 from utils import load_config, save_config
+import utils
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -57,6 +59,20 @@ def index():
     flask.render_template('index1.html')
 
 
+
+@app.route("/apply", methods=["GET", ])
+def apply():
+    ip = get_user_ip(flask.request)
+    session["ip"] = ip
+    tempfile = f"{ip}.json"
+    if os.path.exists(tempfile):
+        import shutil
+        shutil.copy(tempfile, "nsm.json")
+
+    nsm_config = load_config(tempfile)
+    return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+
+
 @app.route("/getconfig", methods=["GET", ])
 def getuiconfig():
     ip = get_user_ip(flask.request)
@@ -67,7 +83,6 @@ def getuiconfig():
         shutil.copy("nsm.json", tempfile)
 
     nsm_config = load_config(tempfile)
-
     return flask.jsonify(nsm_config)
 
 
@@ -81,10 +96,6 @@ def getnsmconfig(config_id):
         ip = get_user_ip(flask.request)
         nsm_config = load_config(f"{ip}.json")
         print(config_id)
-        if config_id == "savaall":
-            print("savaall")
-            nsm_config = load_config(f"{ip}.json")
-            return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
 
         form = flask.request.form
         if config_id in nsm_config.keys():
@@ -93,13 +104,10 @@ def getnsmconfig(config_id):
                 if value != '':
                     nsm_config[config_id][key] = value
 
-            save_config("nsm.json", nsm_config)
             save_config(f"{ip}.json", nsm_config)
 
+
             return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
-
-
-
 
 
 def set_network(config):
@@ -122,85 +130,76 @@ def set_pos_trig_in(config):
     pass
 
 
-@app.route("/set/<config>", methods=["GET", "POST"])
-def setconfig(config=None):
-    response = {"status": "NOK",
-                "request": f"/set/{config}",
-                "response": ""}
+@app.route('/download', methods=['GET'])
+def download():
+    try:
+        abs_file_path = "nsm.json"
+        if not os.path.exists(abs_file_path):
+            return flask.jsonify(
+                {
+                    'message': "Not found download file",
+                    'status': 'success',
+                }
+            )
 
-    if config is None:
-        response["response"] = "config is None"
+        def generate():
+            chunk_size = 10 * 1024 * 1024
 
-    if flask.request.method == "GET":
-        # data = flask.request.json
-        data = {
-            "network": {
-                "ip": "192.168.10.1",
-                "netmask": "255.255.255.0",
-                "gateway": "192.168.10.1",
-                "dns": "144.144.144.144"
-            },
-            "db37beamsteer": {
-                "address": "",
-                "enable": "false",
-                "output": "",
-                "trigger_edge": "",
-                "trigger_enable": "false",
-                "msb_level": "",
-                "data_level": ""
-            },
-            "db25_1": {
-                "address": "",
-                "enable": "false",
-                "output": "",
-                "msb_level": "",
-                "data_level": ""
-            },
-            "db25_2": {
-                "address": "",
-                "enable": "false",
-                "output": "",
-                "msb_level": "",
-                "data_level": ""
-            },
-            "db25_3": {
-                "address": "",
-                "enable": "false",
-                "output": "",
-                "msb_level": "",
-                "data_level": ""
-            },
-            "recr": {
-                "trigger_enable": "false",
-                "trigger_level": "",
-                "pluse_width": "",
-                "r_enable": "",
-                "r_trig_edge": ""
-            },
-            "lo": {
-                "trigger_enable": "false",
-                "trigger_level": "",
-                "pluse_width": "",
-                "r_enable": "",
-                "r_trig_edge": ""
-            },
-            "src": {
-                "trigger_enable": "false",
-                "trigger_level": "",
-                "pluse_width": "",
-                "r_enable": "",
-                "r_trig_edge": ""
-            },
-            "pos_trig_in": {
-                "r_enable": "",
-                "r_trig_edge": ""
+            with open(abs_file_path, "rb") as f:
+                while True:
+                    chunk = f.read(chunk_size)
+                    if not chunk:
+                        break
+                    yield chunk
+
+        response = flask.Response(generate(), mimetype='application/octet-stream')
+
+        output_filename = "nsm.json"
+        response.headers['Content-Disposition'] = 'attachment; filename={}'.format(output_filename)
+        response.headers['content-length'] = os.stat(str(abs_file_path)).st_size
+    except Exception as e:
+        return flask.jsonify(
+            {
+                'message': "Download exception:{}".format(e),
+                'status': 'success',
             }
-        }
-        for config in data.items():
-            print(config)
+        )
 
-    response["response"] = "config finish"
-    return flask.jsonify(response)
+    return response
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    """
+    Upload a json file and import it's content to database.
+    """
+    if 'file' not in flask.request.files:
+        return utils.send_error('No file provided to upload!')
+    _file = flask.request.files['file']
+    if _file.filename == '':
+        return utils.send_error('No selected file!')
+    if not _file or not utils.allowed_file(_file.filename):
+        return utils.send_error('Invalid file type!')
+
+    filename = secure_filename(_file.filename)
+    ip = get_user_ip(flask.request)
+    session["ip"] = ip
+    tempfile = f"{ip}.json"
+    if os.path.exists(tempfile):
+        os.remove(tempfile)
+
+    _file.save(filename)
+    os.rename(filename, tempfile)
+
+    nsm_config = load_config(tempfile)
+
+    return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+    # return flask.jsonify(
+    #     {
+    #         'message': "Upload complete; " + utils.dict_msg(nsm_config),
+    #         'status': 'success',
+    #     }
+    # )
 
 
 app.run(host="0.0.0.0", port=9018)

@@ -5,15 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>NSM System Controller</title>
     <link href="/static/bootstrap.css" rel="stylesheet">
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"-->
-    <!--          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.bundle.js"></script>
-
     <link href="/static/style.css" rel="stylesheet">
 </head>
-
 <body>
 
 <div class="container col-lg-8">
@@ -23,30 +18,37 @@
             <div class="settings-page">
                 <div class="container page">
                     <div style="margin: 10px; text-align:right">
-                        <button type="submit" class="btn btn-primary btn-sm " id="save_all_top"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save
-                            All
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-sm " id="export_top"
-                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">
-                            Export
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-sm " id="import_top"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff ; color: #005cbf">
-                            Import
-                        </button>
+                        <form method="get" action="/apply" style="display: inline">
+                            <button type="submit" class="btn btn-primary btn-sm " id="apply_top"
+                                    style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">
+                                Apply
+                            </button>
+                        </form>
+                        <div class="file btn btn-primary btn-sm " id="import_top"
+                             style="max-width: 120px;min-width: 80px; background-color: #ffffff ; color: #005cbf; overflow:
+                        hidden;position: relative;">
+                            Import<input type="file" name="file" id="import_config"
+                                         style="position: absolute; font-size: 50px; opacity: 0; right: 0;top: 0;"/>
+                        </div>
+                        <form method="get" action="/download" style="display: inline">
+                            <button type="submit" class="btn btn-primary btn-sm "
+                                    id="export_top"
+                                    style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">
+                                Export
+                            </button>
+                        </form>
                     </div>
 
-                    <table class="table table-bordered" style="background-color: #fff3f8 ">
-
+                    <table class="table table-bordered" style="background-color: #fffffe ">
                         <tbody>
-
                         {%for config in ui_config %}
                         <tr>
                             <td style="text-align: center;width: 20%; "><strong>{{ config.label }}</strong></td>
                             <td style="text-align: left;width: 80%">
                                 {% set group_config = nsm_config[config.id]%}
-                                <form id={{config.id}} action="/nsm/{{config.id}}"  enctype="multipart/form-data"
+                                <form id={{config.id}}
+                                      action="/nsm/{{config.id}}"
+                                      enctype="multipart/form-data"
                                       method="post">
                                     <div class="row " style="vertical-align:center;">
                                         {% for item in config.list %}
@@ -56,7 +58,6 @@
                                         </div>
 
                                         <div class="col-sm-8" style="margin-top: 5px">
-
                                             {% if item.type == "input" %}
                                             <div class="input-group input-group-sm"
                                                  style="max-width: 50%;min-width: 25%">
@@ -67,7 +68,6 @@
                                                 placeholder={{item.placeholder}} value = {{ group_config[item.id]
                                                 }}>
                                             </div>
-
                                             {% elif item.type == "dropdown"%}
                                             <div>
                                                 <select name={{ config.id ~ '_' ~ item.id }} id={{ config.id ~ '_' ~
@@ -79,31 +79,9 @@
                                                 <option value={{pullitem}}>{{pullitem}}</option>
                                                 {% endif %}
                                                 {% endfor %}
-
-
                                                 </select>
                                             </div>
-                                            <!--                                            <div class="dropdown">-->
-                                            <!--                                                <button class="btn btn-secondary dropdown-toggle btn-sm"-->
-                                            <!--                                                        type="button"-->
-                                            <!--                                                        style="max-width: 160px;min-width: 120px; text-align: right;
-                                             border-color: #adb5bd ; background-color: #ffffff;color: #1b1e21" name={{ config.id ~ '_' ~ item.id }}
-                                                                                           id={{ config.id ~ '_' ~ item.id }}
-                                                                                            data-toggle="dropdown" aria-haspopup="true"-->
-                                            <!--                                                aria-expanded="false">-->
-                                            <!--                                                High-->
-                                            <!--                                                </button>-->
-                                            <!--                                                <div class="dropdown-menu">-->
-                                            <!--                                                    {% for pullitem in item.list %}-->
-                                            <!--                                                    <a class="dropdown-item"-->
-                                            <!--                                                       onclick="showdropdown($(this).text(), {{ config.id ~ '_' ~ item.id }})"-->
-                                            <!--                                                       >{{pullitem}}</a>-->
-                                            <!--                                                    {% endfor %}-->
-                                            <!--                                                </div>-->
-                                            <!--                                            </div>-->
-
                                             {% elif item.type == "checkbox" %}
-
                                             <div>
                                                 <select name={{ config.id ~ '_' ~ item.id }} id={{ config.id ~ '_' ~
                                                 item.id }} >
@@ -115,28 +93,17 @@
                                                 {% endif %}
                                                 {% endfor %}
                                                 </select>
-                                                <!--                                                {% if group_config[item.id] == "false" %}-->
-                                                <!--                                                <input type="checkbox" value="false"  checked name = {{ config.id ~ '_' ~ item.id }}-->
-                                                <!--                                                       id={{ config.id ~ '_' ~ item.id }} >-->
-                                                <!--                                                {% else %}-->
-                                                <!--                                                <input type="checkbox" value="true" name = {{ config.id ~ '_' ~ item.id }}-->
-                                                <!--                                                       id={{ config.id ~ '_' ~ item.id }} checked>-->
-
-                                                <!--                                                {% endif %}-->
-
                                             </div>
                                             {% endif %}
                                         </div>
                                         {% endfor%}
-                                        <div class="left col-sm-4 text-right" style="margin-top: 5px">
-                                        </div>
 
+                                        <div class="left col-sm-4 text-right" style="margin-top: 5px"></div>
                                         <div class="left col-sm-8" style="margin-top: 5px">
                                             <button type="submit" class="btn btn-primary btn-sm"
                                                     id={{config.id ~
                                             "_" ~ "button"}}
-                                            style="max-width: 160px; min-width: 120px; ">Set
-                                            </button>
+                                            style="max-width: 120px; min-width: 80px; " >Save</button>
                                         </div>
                                     </div>
                                 </form>
@@ -145,36 +112,15 @@
                         {% endfor %}
                         </tbody>
                     </table>
-
-
-                    <div style="margin-bottom: 20px;text-align:right">
-                        <button type="submit" class="btn btn-primary btn-sm  pull-right" id="save_all_bottom"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf">Save
-                            All
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm pull-right" id="export_bottom"
-                                style="max-width: 120px;min-width: 80px;background-color: #ffffff; color: #005cbf">
-                            Export
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm pull-right" id="import_bottom"
-                                style="max-width: 120px;min-width: 80px; background-color: #ffffff; color: #005cbf ">
-                            Import
-                        </button>
-                    </div>
-
-
                 </div>
             </div>
         </div>
     </div>
 
-
     <div class="card-footer" style="padding: 0.5cm">
         <div class="item" id="api_output" style="margin: auto; color: rgb(82, 187, 33)"></div>
     </div>
 </div>
-
-
 </body>
 
 <script type="text/javascript">
@@ -192,23 +138,49 @@
                 api_output.html(data);
             }
         }).fail(function () {
-            api_output.html('Failed to upload file!');
+            api_output.html('Failed to get nsm config!');
         });
     }
 
-    function showdropdown(text, button_name) {
+    function upload(element) {
+        const filename = $(element).val();
+        var fd = new FormData();
+        var files = $(element)[0].files[0];
+        fd.append("file", files);
+        fd.append("name", filename);
 
-        $(button_name).text(text)
+        $.ajax({
+            url: '/upload',
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            if (data.message) {
+                api_output.html("<font color='#c84'>" + data.message + "</font>");
+            }
+
+            window.location.reload();
+
+        }).fail(function () {
+
+            api_output.html("<font color='#c84'>Upload failed</font>");
+        })
+
     }
 
+    $(function () {
+        var $input = $("#import_config");
 
-    function isJSON(name) {
-        return name.match(/json$/i)
-    }
-
+        $input.change(function () {
+            if ($(this).val() != "") {
+                upload(this);
+            }
+        })
+    })
 
     $(document).ready(function () {
-        getConfig()
     });
 </script>
 
