@@ -38,21 +38,21 @@
   "recr": {
     "trigger_enable": "No",
     "trigger_level": "High",
-    "pluse_width": "1",
+    "output": "1",
     "r_enable": "No",
     "r_trig_edge": "High"
   },
   "lo": {
     "trigger_enable": "No",
     "trigger_level": "High",
-    "pluse_width": "1",
+    "output": "1",
     "r_enable": "No",
     "r_trig_edge": "High"
   },
   "src": {
     "trigger_enable": "No",
     "trigger_level": "High",
-    "pluse_width": "1",
+    "output": "1",
     "r_enable": "No",
     "r_trig_edge": "High"
   },

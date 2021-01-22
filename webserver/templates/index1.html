@@ -5,7 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>NSM System Controller</title>
     <link href="/static/bootstrap.css" rel="stylesheet">
+    <link href="/static/bootstrapValidator.min.css" rel="stylesheet">
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrapValidator.min.js"></script>
     <script src="/static/js/bootstrap.bundle.js"></script>
     <link href="/static/style.css" rel="stylesheet">
 </head>
@@ -57,16 +59,23 @@
                                             <label for={{item.id}}>{{item.label}}:</label>
                                         </div>
 
-                                        <div class="col-sm-8" style="margin-top: 5px">
+                                        <div class="col-sm-8 " style="margin-top: 5px">
                                             {% if item.type == "input" %}
-                                            <div class="input-group input-group-sm"
+                                            <div class="form-group"
                                                  style="max-width: 50%;min-width: 25%">
+                                                {% if item.id == "output" %}
+                                                <input type="number" class=" form-control" aria-label={{item.label}}
+                                                       name={{ config.id ~ '_' ~ item.id }} id={{ config.id ~ '_' ~ item.id }}
+                                                aria-describedby={{item.id}}
+                                                placeholder={{item.placeholder}} value = {{ group_config[item.id]}}>
+                                                {% else %}
                                                 <input type="text" class="form-control" aria-label={{item.label}}
                                                        name={{ config.id ~ '_' ~ item.id }}
                                                 id={{ config.id ~ '_' ~ item.id }}
                                                 aria-describedby={{item.id}}
                                                 placeholder={{item.placeholder}} value = {{ group_config[item.id]
                                                 }}>
+                                                 {% endif %}
                                             </div>
                                             {% elif item.type == "dropdown"%}
                                             <div>
@@ -124,6 +133,219 @@
 </body>
 
 <script type="text/javascript">
+
+    $(function () {
+        $('form').bootstrapValidator({
+
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                network_ip: {
+                    validators: {
+                        notEmpty: {
+                            message: 'ip不能为空'
+                        },
+                        regexp: {
+                            regexp: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+                            message: '不是有效的ip'
+                        }
+                    }
+                },
+                network_gateway: {
+                    validators: {
+                        notEmpty: {
+                            message: 'gateway不能为空'
+                        },
+                        regexp: {
+                            regexp: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+                            message: '不是有效的gateway'
+                        }
+                    }
+                },
+                network_netmask: {
+                    validators: {
+                        notEmpty: {
+                            message: 'gateway不能为空'
+                        },
+                        regexp: {
+                            regexp: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+                            message: '不是有效的netmask'
+                        }
+                    }
+                },
+                network_dns: {
+                    validators: {
+                        notEmpty: {
+                            message: 'gateway不能为空'
+                        },
+                        regexp: {
+                            regexp: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+                            message: '不是有效的dns'
+                        }
+                    }
+                },
+                db37beamsteer_address: {
+                    validators: {
+                        notEmpty: {
+                            message: '地址不能为空'
+                        },
+                        regexp: {
+                            regexp: /^0[x|X][0-9A-Za-z]{1,4}$/,
+                            message: '不是有效的地址,请用16进制表示'
+                        }
+                    }
+                },
+                db25_1_address: {
+                    validators: {
+                        notEmpty: {
+                            message: '地址不能为空'
+                        },
+                        regexp: {
+                            regexp: /^0[x|X][0-9A-Za-z]{1,2}$/,
+                            message: '不是有效的地址,请用16进制表示'
+                        }
+                    }
+                },
+                db25_2_address: {
+                    validators: {
+                        notEmpty: {
+                            message: '地址不能为空'
+                        },
+                        regexp: {
+                            regexp: /^0[x|X][0-9A-Za-z]{1,2}$/,
+                            message: '不是有效的地址,请用16进制表示'
+                        }
+                    }
+                },
+                db25_3_address: {
+                    validators: {
+                        notEmpty: {
+                            message: '地址不能为空'
+                        },
+                        regexp: {
+                            regexp: /^0[x|X][0-9A-Za-z]{1,2}$/,
+                            message: '不是有效的地址,请用16进制表示'
+                        }
+                    }
+                },
+                db25_4_address: {
+                    validators: {
+                        notEmpty: {
+                            message: '地址不能为空'
+                        },
+                        regexp: {
+                            regexp: /^0[x|X][0-9A-Za-z]{1,2}$/,
+                            message: '不是有效的地址,请用16进制表示'
+                        }
+                    }
+                },
+
+                db37beamsteer_output: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-16777215整数',
+                            min : 1,
+                            max : 16777215
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                db25_1_output: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-65535整数',
+                            min : 1,
+                            max : 65535
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                db25_2_output: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-65535整数',
+                            min : 1,
+                            max : 65535
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                db25_3_output: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-65535整数',
+                            min : 1,
+                            max : 65535
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                db25_4_output: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-65535整数',
+                            min : 1,
+                            max : 65535
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                recr_pluse_width: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-1000整数',
+                            min : 1,
+                            max : 1000
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                lo_pluse_width: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-1000整数',
+                            min : 1,
+                            max : 1000
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+                src_output: {
+                    validators: {
+                        between: {
+                            message : '输入范围1-1000整数',
+                            min : 1,
+                            max : 1000
+                        },
+                        notEmpty: {
+                            message: '输出值不能为空'
+                        },
+                    }
+                },
+
+
+
+            }
+        });
+    });
+
     function getConfig() {
         var api_output = $('#api_output');
         $.ajax({
@@ -182,6 +404,8 @@
 
     $(document).ready(function () {
     });
+
+
 </script>
 
 </html>
