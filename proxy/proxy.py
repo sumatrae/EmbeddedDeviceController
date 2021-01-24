@@ -164,7 +164,7 @@ class UDPServer():
             time.sleep(self.GET_INFO_INTERVAL)
 
 if __name__ == "__main__":
-    com = ""
+    com = "COM7"
     udp_broadcast_port = 23333
 
     com_messenger = ComMessenger(com)
