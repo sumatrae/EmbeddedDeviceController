@@ -1,7 +1,7 @@
 import time
 import socket
 import select
-from com import COM
+from com1 import COM
 import threading
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(level)s %(filename)s:%(lineno)d - %(message)s")
