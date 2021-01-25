@@ -7,8 +7,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(file
 
 class COM():
     def __init__(self, com, interval = 0, baudrate=115200):
+        self.TIMEOUT = 0
         self.command_interval = interval
-        self.conn = serial.Serial(com, baudrate, timeout=0)
+        self.conn = serial.Serial(com, baudrate, timeout=self.TIMEOUT)
 
     def send(self, str):
         if not isinstance(str, bytes):
@@ -23,6 +24,11 @@ class COM():
 
 
 class ComMessenger():
+    # message status
+    MSG_PROCESSING = 0
+    MSG_READY      = 2
+    MSG_EXPIRED    = 3
+
     def __init__(self, com, interval = 0, baudrate=115200):
         self.INVALID_RESULT = ""
         self.POLL_INTERVAL = 0.1
@@ -42,8 +48,14 @@ class ComMessenger():
                 for msg_id in self.to_process_queue.keys():
                     self.com_conn.send(self.to_process_queue[msg_id])
                     reply = self.com_conn.receive()
-
-                    self.processed_queue[msg_id] = reply
+                    
+                    if reply:
+                        self.processed_queue[msg_id] = {"msg": reply, 
+                                                        "status": self.MSG_READY}
+                    else:
+                        # timeout, no reply
+                        self.processed_queue[msg_id] = {"msg": self.INVALID_REPLY, 
+                                                        "status": self.MSG_EXPIRED}
                     del self.to_process_queue[msg_id]
             else:
                 time.sleep(self.POLL_INTERVAL)
@@ -54,19 +66,27 @@ class ComMessenger():
         else:
             self.to_process_queue[msg_id] = msg
 
-    # check whether replied
-    def is_ok(self, msg_id):
-        if msg_id in self.processed_queue:
-            return True
+    def get_msg_status(self, msg_id):
+        # If message of msg_id is expired, this msg_id will be 
+        # deleted after call get_msg_status(). So do not call
+        # get_msg_status() twice if the msg_id is expired.
+
+        if msg_id in self.processed_queue.keys():
+            if self.processed_queue[msg_id]["status"] == self.MSG_READY:
+                return self.MSG_READY
+            else:
+                # delete expired message from processed_queue
+                del self.processed_queue[msg_id]
+                return self.MSG_EXPIRED
         else:
-            return False
-
+            return self.MSG_PROCESSING
+            
     def recv(self, msg_id):
-        # call is_ok() before recv()
-
-        if msg_id in self.processed_queue:
-            result = self.processed_queue[msg_id]
+        # call get_msg_status() and make sure msg status is 
+        # MSG_READY before calling recv().
+        if msg_id in self.processed_queue.keys():
+            result = self.processed_queue[msg_id]["msg"]
             del self.processed_queue[msg_id]
         else:
-            result = self.INVALID_RESULT
+            result = self.INVALID_REPLY
         return result
