@@ -3,7 +3,7 @@ import threading
 import time
 import socket
 import select
-
+from config import cfg_parser
 from com import ComMessenger
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s")
@@ -18,7 +18,6 @@ class Proxy(object):
         self.proxy = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.proxy.bind(self.address)
         self.proxy.listen(self.LISTEN_NO)
-
         self.comconn = com_messenger
 
         self.read_list = [self.proxy]
@@ -64,12 +63,19 @@ class Proxy(object):
 
             # check if COM replies
             for msg_id_str in to_process_msgs.keys():
-                if self.comconn.is_ok(msg_id_str):
+                
+                msg_status = self.comconn.get_msg_status(msg_id_str)
+
+                if msg_status == ComMessenger.MSG_READY:
                     sock = to_process_msgs[msg_id_str]
                     if sock in processed_msgs.keys():
                         processed_msgs[sock].append(self.comconn.recv(msg_id_str))
                     else:
                         processed_msgs[sock] = [self.comconn.recv(msg_id_str)]
+                    del to_process_msgs[msg_id_str]
+
+                elif msg_status == ComMessenger.MSG_EXPIRED:
+                    logging.warn("Message {} expired while waiting for reply from board. It will be dropped.".format(msg_id_str))
                     del to_process_msgs[msg_id_str]
             
             # add replies from COM to send queue
@@ -152,11 +158,16 @@ class UDPServer():
 
         self.comconn.send(msg_id_str, status_cmd)
 
-        while True:            
-            if self.comconn.is_ok(msg_id_str):
+        while True:
+            msg_status = self.comconn.get_msg_status(msg_id_str)      
+            if  msg_status == ComMessenger.MSG_READY:
                 recv = self.comconn.recv(msg_id_str).encode('ascii')
                 self.board_status = recv
 
+                msg_id += 1
+                msg_id_str = "UDP_{}".format(msg_id)
+                self.comconn.send(msg_id_str, status_cmd)
+            elif msg_status == ComMessenger.MSG_EXPIRED:
                 msg_id += 1
                 msg_id_str = "UDP_{}".format(msg_id)
                 self.comconn.send(msg_id_str, status_cmd)
@@ -164,11 +175,23 @@ class UDPServer():
             time.sleep(self.GET_INFO_INTERVAL)
 
 if __name__ == "__main__":
-    com = "COM7"
-    udp_broadcast_port = 23333
+    #com = "COM1"
+    com = cfg_parser.get("COM", "comport")
+    if comport is None:
+        raise Exception("Please check comport in config file")
+
+    # udp_broadcast_port = 23333
+    udp_broadcast_port = cfg_parser.get("PROXY", "udpport")
+    if udp_broadcast_port is None:
+        raise Exception("Please check udpport in config file")
+
+    # tcpport = 30000
+    tcpport = cfg_parser.get("PROXY", "tcpport")
+    if tcpport is None:
+        raise Exception("Please check tcpport in config file")
 
     com_messenger = ComMessenger(com)
-    proxy_server = Proxy("localhost", 30000, com_messenger)
+    proxy_server = Proxy("localhost", tcpport, com_messenger)
     udp_server = UDPServer(udp_broadcast_port, com_messenger)
     
     proxy_server.serve()
