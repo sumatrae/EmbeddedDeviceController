@@ -29,11 +29,11 @@ class ComMessenger():
     MSG_READY      = 2
     MSG_EXPIRED    = 3
 
-    def __init__(self, com, interval = 0, baudrate=115200):
+    def __init__(self, com_conn):
         self.INVALID_RESULT = ""
         self.POLL_INTERVAL = 0.1
 
-        self.com_conn = COM(com, interval, baudrate)
+        self.com_conn = com_conn
         # unreplied
         self.to_process_queue = dict()
         # replied
@@ -45,10 +45,12 @@ class ComMessenger():
     def poll(self):
         while True:
             if len(self.to_process_queue) > 0:
+                finished_msgs = []
                 for msg_id in self.to_process_queue.keys():
                     self.com_conn.send(self.to_process_queue[msg_id])
                     reply = self.com_conn.receive()
-                    
+                    # print(reply)
+
                     if reply:
                         self.processed_queue[msg_id] = {"msg": reply, 
                                                         "status": self.MSG_READY}
@@ -56,6 +58,9 @@ class ComMessenger():
                         # timeout, no reply
                         self.processed_queue[msg_id] = {"msg": self.INVALID_REPLY, 
                                                         "status": self.MSG_EXPIRED}
+                    finished_msgs.append(msg_id)
+                
+                for msg_id in finished_msgs:
                     del self.to_process_queue[msg_id]
             else:
                 time.sleep(self.POLL_INTERVAL)
