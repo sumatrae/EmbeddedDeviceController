@@ -4,7 +4,7 @@ import time
 import socket
 import select
 from config import cfg_parser
-from com import ComMessenger
+from com import ComMessenger, COM
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s")
 
@@ -33,7 +33,7 @@ class Proxy(object):
 
         while True:
             # read from PC & write to PC
-            readset, writeset, _ = select.select(self.read_list, self.write_list, [])
+            readset, writeset, _ = select.select(self.read_list, self.write_list, [], 0.5)
             
             # accept new connection and read data
             for sock in readset:
@@ -62,6 +62,7 @@ class Proxy(object):
                 self.write_list.remove(sock)
 
             # check if COM replies
+            finished_msgs = []
             for msg_id_str in to_process_msgs.keys():
                 
                 msg_status = self.comconn.get_msg_status(msg_id_str)
@@ -72,11 +73,13 @@ class Proxy(object):
                         processed_msgs[sock].append(self.comconn.recv(msg_id_str))
                     else:
                         processed_msgs[sock] = [self.comconn.recv(msg_id_str)]
-                    del to_process_msgs[msg_id_str]
+                    finished_msgs.append(msg_id_str)
 
                 elif msg_status == ComMessenger.MSG_EXPIRED:
                     logging.warn("Message {} expired while waiting for reply from board. It will be dropped.".format(msg_id_str))
-                    del to_process_msgs[msg_id_str]
+                    finished_msgs.append(msg_id_str)
+            for msg_id in finished_msgs:
+                del to_process_msgs[msg_id]
             
             # add replies from COM to send queue
             for sock in processed_msgs.keys():
@@ -177,7 +180,7 @@ class UDPServer():
 if __name__ == "__main__":
     #com = "COM1"
     com = cfg_parser.get("COM", "comport")
-    if comport is None:
+    if com is None:
         raise Exception("Please check comport in config file")
 
     # udp_broadcast_port = 23333
@@ -190,9 +193,11 @@ if __name__ == "__main__":
     if tcpport is None:
         raise Exception("Please check tcpport in config file")
 
+    com = COM(com, interval = 0 , baudrate = 115200)
     com_messenger = ComMessenger(com)
     proxy_server = Proxy("localhost", tcpport, com_messenger)
     udp_server = UDPServer(udp_broadcast_port, com_messenger)
     
     proxy_server.serve()
     udp_server.serve()
+    udp_server.broadcast()
