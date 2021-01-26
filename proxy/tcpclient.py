@@ -9,8 +9,8 @@ class tcpClient():
         self.client.connect((server_ip, server_port))
 
     def send(self, msg):
-        self.client.send(msg.encode("utf-8"))
-        recv = self.client.recv(1024).decode("utf-8")
+        self.client.send(msg.encode("ascii"))
+        recv = self.client.recv(1024).decode("ascii")
         return recv
 
 
