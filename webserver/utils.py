@@ -1,8 +1,4 @@
-import os
 import json
-from collections import defaultdict
-from functools import wraps
-
 import flask
 
 
@@ -29,7 +25,6 @@ def send_info(msg):
             'status': 'success'
         }
     )
-
 
 
 def dict_msg(msgs):

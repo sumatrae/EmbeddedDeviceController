@@ -1,12 +1,15 @@
-import serial
-import time 
+import time
 import threading
 import logging
+import serial
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s")
+
 
 class COM():
-    def __init__(self, com, interval = 0, baudrate=115200):
+    def __init__(self, com, interval=0, baudrate=115200):
         self.TIMEOUT = 0
         self.command_interval = interval
         self.conn = serial.Serial(com, baudrate, timeout=self.TIMEOUT)
@@ -20,17 +23,18 @@ class COM():
 
     def receive(self):
         time.sleep(self.command_interval)
-        return "".join([line.decode("ascii") for line in self.conn.readlines()])
+        return "".join([line.decode("ascii")
+                        for line in self.conn.readlines()])
 
 
 class ComMessenger():
     # message status
     MSG_PROCESSING = 0
-    MSG_READY      = 2
-    MSG_EXPIRED    = 3
+    MSG_READY = 2
+    MSG_EXPIRED = 3
 
     def __init__(self, com_conn):
-        self.INVALID_RESULT = ""
+        self.INVALID_REPLY = ""
         self.POLL_INTERVAL = 0.1
 
         self.com_conn = com_conn
@@ -39,7 +43,9 @@ class ComMessenger():
         # replied
         self.processed_queue = dict()
 
-        self.thread_polling = threading.Thread(target=ComMessenger.poll, args=(self,), daemon=True)
+        self.thread_polling = threading.Thread(
+            target=ComMessenger.poll, args=(
+                self,), daemon=True)
         self.thread_polling.start()
 
     def poll(self):
@@ -52,14 +58,14 @@ class ComMessenger():
                     # print(reply)
 
                     if reply:
-                        self.processed_queue[msg_id] = {"msg": reply, 
+                        self.processed_queue[msg_id] = {"msg": reply,
                                                         "status": self.MSG_READY}
                     else:
                         # timeout, no reply
-                        self.processed_queue[msg_id] = {"msg": self.INVALID_REPLY, 
+                        self.processed_queue[msg_id] = {"msg": self.INVALID_REPLY,
                                                         "status": self.MSG_EXPIRED}
                     finished_msgs.append(msg_id)
-                
+
                 for msg_id in finished_msgs:
                     del self.to_process_queue[msg_id]
             else:
@@ -72,7 +78,7 @@ class ComMessenger():
             self.to_process_queue[msg_id] = msg
 
     def get_msg_status(self, msg_id):
-        # If message of msg_id is expired, this msg_id will be 
+        # If message of msg_id is expired, this msg_id will be
         # deleted after call get_msg_status(). So do not call
         # get_msg_status() twice if the msg_id is expired.
 
@@ -85,9 +91,9 @@ class ComMessenger():
                 return self.MSG_EXPIRED
         else:
             return self.MSG_PROCESSING
-            
+
     def recv(self, msg_id):
-        # call get_msg_status() and make sure msg status is 
+        # call get_msg_status() and make sure msg status is
         # MSG_READY before calling recv().
         if msg_id in self.processed_queue.keys():
             result = self.processed_queue[msg_id]["msg"]

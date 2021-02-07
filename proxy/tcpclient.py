@@ -1,7 +1,7 @@
-from config import cfg_parser
 import socket
 
-class tcpClient():
+
+class TCPClient():
     def __init__(self):
         server_ip = "localhost"
         server_port = 30000
@@ -12,5 +12,3 @@ class tcpClient():
         self.client.send(msg.encode("ascii"))
         recv = self.client.recv(1024).decode("ascii")
         return recv
-
-

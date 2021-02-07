@@ -1,9 +1,12 @@
+"""
+Flask service
+"""
 import os
 import flask
 from flask import Flask, session
 import config
-from utils import load_config, save_config
 import utils
+from utils import load_config, save_config
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -51,13 +54,13 @@ def index():
     nsm_config = load_config(tempfile)
 
     if flask.request.method == "GET":
-        return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+        return flask.render_template(
+            "index1.html", ui_config=ui_config, nsm_config=nsm_config)
 
     elif flask.request.method == "POST":
         return flask.render_template("index1.html")
 
     flask.render_template('index1.html')
-
 
 
 @app.route("/apply", methods=["GET", ])
@@ -70,7 +73,8 @@ def apply():
         shutil.copy(tempfile, "nsm.json")
 
     nsm_config = load_config(tempfile)
-    return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+    return flask.render_template(
+        "index1.html", ui_config=ui_config, nsm_config=nsm_config)
 
 
 @app.route("/getconfig", methods=["GET", ])
@@ -106,8 +110,8 @@ def getnsmconfig(config_id):
 
             save_config(f"{ip}.json", nsm_config)
 
-
-            return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+            return flask.render_template(
+                "index1.html", ui_config=ui_config, nsm_config=nsm_config)
 
 
 def set_network(config):
@@ -152,11 +156,14 @@ def download():
                         break
                     yield chunk
 
-        response = flask.Response(generate(), mimetype='application/octet-stream')
+        response = flask.Response(
+            generate(), mimetype='application/octet-stream')
 
         output_filename = "nsm.json"
-        response.headers['Content-Disposition'] = 'attachment; filename={}'.format(output_filename)
-        response.headers['content-length'] = os.stat(str(abs_file_path)).st_size
+        response.headers['Content-Disposition'] = 'attachment; filename={}'.format(
+            output_filename)
+        response.headers['content-length'] = os.stat(
+            str(abs_file_path)).st_size
     except Exception as e:
         return flask.jsonify(
             {
@@ -193,7 +200,8 @@ def upload_file():
 
     nsm_config = load_config(tempfile)
 
-    return flask.render_template("index1.html", ui_config=ui_config, nsm_config=nsm_config)
+    return flask.render_template(
+        "index1.html", ui_config=ui_config, nsm_config=nsm_config)
     # return flask.jsonify(
     #     {
     #         'message': "Upload complete; " + utils.dict_msg(nsm_config),
