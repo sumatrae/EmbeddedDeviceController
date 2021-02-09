@@ -1,16 +1,26 @@
-# This is a sample Python script.
+from socketserver import ThreadingTCPServer
+from proxy import COMHandler
+from proxy import cfg_parser
+from proxy import BroadcastServer
 
-# Press Ctrl+F5 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def main():
+    tcpport = cfg_parser.get("PROXY", "tcpport")
+    if tcpport is None:
+        raise Exception("Please check tcpport in config file")
 
+    serv = ThreadingTCPServer(('', int(tcpport)), COMHandler)
+    serv.serve_forever()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+    tcp_server_port = cfg_parser.get("PROXY", "tcpport")
+    if tcp_server_port is None:
+        raise Exception("Please check tcpport in config file")
 
+    broadcast_port = cfg_parser.get("PROXY", "udpport")
+    if broadcast_port is None:
+        raise Exception("Please check udpport in config file")
+    broadcast_server = BroadcastServer(broadcast_port, tcp_server_port)
+    broadcast_server.serve()
+    
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()

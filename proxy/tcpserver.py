@@ -1,18 +1,25 @@
 from com import com
-from socketserver import BaseRequestHandler, TCPServer
-
+from socketserver import BaseRequestHandler, TCPServer, ThreadingTCPServer
+import threading
 from config import cfg_parser
 
 
-class Handler(BaseRequestHandler):
+class COMHandler(BaseRequestHandler):
+
+	lock = threading.Lock()
+
 	def handle(self):
 		print('Got connection from', self.client_address)
 		while True:
 			msg_from_tcp = self.request.recv(8192)
-			print(msg_from_tcp)
+			if not msg_from_tcp:
+				break
+			print("msg_from_tcp:",msg_from_tcp)
+			self.lock.acquire()
 			com.send(msg_from_tcp)
 			msg_from_com = com.receive()
-			print(msg_from_com)
+			self.lock.release()
+			print("msg_from_com:",msg_from_com)
 			if not msg_from_com:
 				break
 
@@ -24,8 +31,7 @@ if __name__ == '__main__':
 	if tcpport is None:
 		raise Exception("Please check tcpport in config file")
 
-	try:
-		serv = TCPServer(('', tcpport), Handler)
-		serv.serve_forever()
-	finally:
-		serv.server_close()
+	# serv = TCPServer(('', int(tcpport)), Handler)
+	serv = ThreadingTCPServer(('', int(tcpport)), COMHandler)
+	serv.serve_forever()
+
