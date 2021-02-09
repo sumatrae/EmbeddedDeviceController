@@ -1,7 +1,5 @@
-from proxy.com import ComMessenger
-from proxy.proxy import Proxy, UDPServer
-import threading 
-
+from com import ComMessenger
+from proxy import Proxy, UDPServer
 
 class COM():
     def __init__(self, com, interval = 0, baudrate=115200):
@@ -18,10 +16,6 @@ if __name__ == "__main__":
     udp_broadcast_port = 23333
     com = COM(comport, interval = 0 , baudrate = 115200)
     com_messenger = ComMessenger(com)
-
-    # proxy_server = Proxy("localhost", 30000, com_messenger)
-    # proxy_server.serve()
-
     udp_server = UDPServer(udp_broadcast_port, com_messenger)
     udp_server.serve()
     udp_server.broadcast()

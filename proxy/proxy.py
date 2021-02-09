@@ -136,8 +136,8 @@ class UDPServer():
         # set up UDP
         self.server = socket.socket(
             socket.AF_INET,
-            socket.SOCK_DGRAM,
-            socket.IPPROTO_UDP)
+            socket.SOCK_DGRAM)
+            # socket.IPPROTO_UDP)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.broadcast_port = broadcast_port
 
@@ -164,9 +164,12 @@ class UDPServer():
     def broadcast(self):
         # enable broadcast
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        # self.server.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, 2) #2-"eth0"
+
 
         while True:
             self.server.sendto(
+                # self.board_status, ('192.168.101.255', self.broadcast_port))
                 self.board_status, ('<broadcast>', self.broadcast_port))
             print(
                 "message sent! @ {}".format(
@@ -214,7 +217,7 @@ def main():
 
     com = COM(com, interval=0, baudrate=115200)
     messenger = ComMessenger(com)
-    proxy_server = Proxy("localhost", tcpport, messenger)
+    proxy_server = Proxy("localhost", int(tcpport), messenger)
     udp_server = UDPServer(udp_broadcast_port, messenger)
 
     proxy_server.serve()
