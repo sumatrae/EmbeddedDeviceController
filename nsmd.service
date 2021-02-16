@@ -1,0 +1,9 @@
+[Unit]
+After=network.service
+
+[Service]
+Type=forking
+ExecStart=/home/ubuntu/nsm/start.sh
+
+[Install]
+WantedBy=default.target

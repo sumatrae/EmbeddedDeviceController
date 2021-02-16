@@ -1,7 +1,7 @@
 import logging
 import threading
 import time
-from config import cfg_parser
+from .config import cfg_parser
 import socket
 
 from threading import Timer
@@ -29,6 +29,7 @@ class BroadcastServer():
 			# print(type(self.board_status),self.board_status)
 			self.server.sendto(bytes([self.board_status]),
 			                   ('<broadcast>', self.broadcast_port))
+			print("Broading board status: ", self.board_status)
 			time.sleep(self.boardcast_interval)
 
 	def get_board_status(self):

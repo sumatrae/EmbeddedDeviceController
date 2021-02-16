@@ -1,7 +1,8 @@
-from com import com
+
 from socketserver import BaseRequestHandler, TCPServer, ThreadingTCPServer
 import threading
-from config import cfg_parser
+from proxy.config import cfg_parser
+from proxy.com import com
 
 
 class COMHandler(BaseRequestHandler):

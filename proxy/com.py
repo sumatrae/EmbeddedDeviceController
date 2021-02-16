@@ -2,7 +2,7 @@ import serial
 import time
 import threading
 import logging
-from config import cfg_parser
+from proxy.config import cfg_parser
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s")
 
@@ -20,8 +20,21 @@ class COM():
 		self.conn.flush()
 
 	def receive(self):
-		time.sleep(self.command_interval)
-		return self.conn.readall()
+
+		default_count = 10
+		count = default_count
+		while(count > 0):
+			print(count)
+			recv = self.conn.readall()
+			print(recv)
+			if recv.endswith(b"\n"):
+				return recv
+			print(self.command_interval/default_count)
+			time.sleep(self.command_interval/default_count)
+			count -= 1
+
+
+		return b''
 		# return "".join([line.decode("ascii") for line in self.conn.readlines()])
 
 
