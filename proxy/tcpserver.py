@@ -14,7 +14,7 @@ class COMHandler(BaseRequestHandler):
 		while True:
 			msg_from_tcp = self.request.recv(8192)
 			if not msg_from_tcp:
-				break
+				continue
 			print("msg_from_tcp:",msg_from_tcp)
 			self.lock.acquire()
 			com.send(msg_from_tcp)
@@ -22,7 +22,7 @@ class COMHandler(BaseRequestHandler):
 			self.lock.release()
 			print("msg_from_com:",msg_from_com)
 			if not msg_from_com:
-				break
+				continue
 
 			self.request.send(msg_from_com)
 
