@@ -9,8 +9,8 @@ def send_msg2tcpserver(msg, end = '\n'):
 	tcp_cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	tcp_cli.connect(('localhost', 30000))
 	tcp_cli.send(bytes(msg.encode("ascii")))
-	buff = tcp_cli.recv(8192)
-	print(buff)
+# 	buff = tcp_cli.recv(8192)
+# 	print(buff)
 	tcp_cli.close()
 
 def get_network_cfg():
